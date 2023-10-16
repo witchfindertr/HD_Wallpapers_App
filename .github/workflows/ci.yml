@@ -1,4 +1,4 @@
-name: CI/CD Build APK and Upload to Drive and Send Link to Telegram Channel and Send to Gmail Account
+name: CI/CD Build APK 
 
 on:
   push:
