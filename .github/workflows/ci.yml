@@ -1,0 +1,52 @@
+name: CI/CD Build APK and Upload to Drive and Send Link to Telegram Channel and Send to Gmail Account
+
+on:
+  push:
+    branches:
+      - master
+      - test
+
+jobs:
+  Build_Android_Apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get Branch Name
+        id: branch_name
+        run: echo "::set-output name=branch_name::$(echo ${GITHUB_REF#refs/heads/})"
+
+
+      - name: Get Project Name
+        id: project_name
+        run: echo "::set-output name=project_name::$(echo ${GITHUB_REPOSITORY#*/})"
+
+
+      - name: Get Commit Author
+        id: commit_author
+        run: echo "::set-output name=commit_author::$(git log -1 --pretty=%an)"
+
+
+      - name: Get Commit Author Email
+        id: commit_author_email
+        run: echo "::set-output name=commit_author_email::$(git log -1 --pretty=%ae)"
+
+
+      - name: Get Commit Author Date
+        id: date_time
+        run: echo "::set-output name=date_time::$(git log -1 --pretty=%cd --date=format:'%B %d, %Y %I:%M %p')"
+
+
+      - name: Echo All Outputs
+        run: |
+          echo "Branch Name: ${{ steps.branch_name.outputs.branch_name }}"
+          echo "Project Name: ${{ steps.project_name.outputs.project_name }}"
+          echo "Commit Author: ${{ steps.commit_author.outputs.commit_author }}"
+          echo "Commit Author Email: ${{ steps.commit_author_email.outputs.commit_author_email }}"
+          echo "Date Time: ${{ steps.date_time.outputs.date_time }}"
+
+#  ****************************************************************************************************************
+#  *****************************  Set up Flutter and Build APK  ***************************************************
